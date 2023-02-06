@@ -28,7 +28,7 @@
    - name: Clone Git repository
      git:
       repo: "https://github.com/20014/challenge4.git"
-      dest: "/tmp/wpnl_project1/"
+      dest: "/tmp/wpnl_project/"
       
    - name: Build Maven project
      shell: "cd /tmp/wpnl_project/ && mvn package"
