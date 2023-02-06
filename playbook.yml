@@ -1,0 +1,42 @@
+---
+
+- name: Network Getting Started First Playbook
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+   - name: Download java
+     get_url:
+      url: https://download.oracle.com/java/17/archive/jdk-17.0.6_linux-x64_bin.deb
+      dest: /tmp/jdk17.deb
+       
+   - name: install Java
+     apt:
+      deb: /tmp/jdk17.deb
+      state: present
+      
+   - name: download maven
+     get_url:
+      url: http://ftp.nl.debian.org/debian/pool/main/m/maven/maven_3.6.3-5_all.deb
+      dest: /tmp/maven.deb
+      
+   - name: install mvn
+     apt:
+      deb: /tmp/maven.deb
+      state: present
+     
+   - name: Clone Git repository
+     git:
+      repo: "https://github.com/20014/challenge4.git"
+      dest: "/tmp/wpnl_project1/"
+      
+   - name: Build Maven project
+     shell: "cd /tmp/wpnl_project/ && mvn package"
+    
+   - name: Run Maven project
+     cron:
+      name: run every 3rd
+      minute: "3,13,23,33,43,53"
+      job: "cd /tmp/wpnl_project && mvn exec:java"
+     
+    
